@@ -1,0 +1,17 @@
+#!/bin/bash
+
+echo "oneadmin:<%= @password %>" > /var/lib/one/.one/one_auth
+  
+grep "oneadmin:" /var/lib/one/.one/occi_auth >/dev/null
+if [ $? -eq 0 ]; then
+  sed -i -e "s/\(oneadmin:\)\(.*\)/\1<%= @password %>/" /var/lib/one/.one/occi_auth
+else
+  echo "oneadmin:<%= @password %>" >> /var/lib/one/.one/occi_auth
+fi
+
+grep "oneadmin" /var/lib/one/.one/sunstone_auth >/dev/null
+if [ $? -eq 0 ]; then
+  sed -i -e "s/\(oneadmin:\)\(.*\)/\1<%= @password %>/" /var/lib/one/.one/sunstone_auth
+else
+  echo "oneadmin:<%= @password %>" >> /var/lib/one/.one/sunstone_auth
+fi
